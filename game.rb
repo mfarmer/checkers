@@ -21,7 +21,13 @@ class Game
       @player_2.make_move
     end
 
-    puts "Congratulations, #{@board.winner_color?}, you have won the game!".colorize(:color => :green).blink
+    puts "Congratulations, #{@board.winner_color?},
+     you have won the game!".colorize(:color => :green).blink
+  end
+  
+  def pause
+    print " >>> Press ENTER to continue".colorize(:color => :blue).blink
+    gets.chomp
   end
 
 end
