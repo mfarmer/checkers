@@ -16,6 +16,7 @@ class Player
   def make_move
     error_occurred = false
     error_message = ''
+    
     begin
       @board.disable_blinking
       @board.display
@@ -76,6 +77,7 @@ class Player
     gets.chomp.split(',').map do |unclean_coord|
       input_to_coordinate(unclean_coord)
     end
+    
   end
 
 end

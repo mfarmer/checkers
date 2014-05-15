@@ -14,6 +14,15 @@ class Board
     setup_pieces
   end
   
+=begin
+  def setup_pieces
+    @grid[7][1] = Piece.new(:red, self, [7, 1], '◉')
+    @grid[7][1].king_me
+    @grid[4][4] = Piece.new(:black, self, [4, 4], '◉')
+    @grid[6][2] = Piece.new(:black, self, [6, 2], '◉')
+  end
+=end
+  
   def setup_pieces
     @grid[0][0] = Piece.new(:red, self, [0, 0], '◉')
     @grid[0][2] = Piece.new(:red, self, [0, 2], '◉')
@@ -44,21 +53,26 @@ class Board
 
   def perform_moves!(piece,move_sequence)
     #debugger
-    puts "perform_moves!: #{piece.pos} is going to try #{move_sequence}"
-    @game.pause
+    #puts "perform_moves!: #{piece.pos} is going to try #{move_sequence}"
+    #@game.pause
     
-    # One slide only?
-    if move_sequence.count == 1
-      puts "Slide only!"
-      piece.perform_slide(move_sequence.first)
-    else
-      puts "I think you want a sequence of moves."
-      move_sequence.each do |desired_coord|
+    move_sequence.each do |desired_coord|
+      
+      #puts "Is #{desired_coord} possible from #{piece.pos}? #{piece.move_within_reach?(desired_coord)}"
+      #@game.pause
+      raise "Impossible move" if !piece.move_within_reach?(desired_coord)
+      
+      if piece.has_slide_move?([desired_coord])
+        #puts "Slide move detected."
+        piece.perform_slide(desired_coord)
+      else
+        #puts "I think #{desired_coord} is a jump move"
         piece.perform_jump(desired_coord)
       end
     end
     
-    puts "Seems to be no problem..."
+    #puts "Seems to be no problem..."
+    piece.maybe_promote
   end
   
   def disable_blinking
@@ -131,6 +145,7 @@ class Board
           new_board[pos] = el
         else
           new_board[pos] = Piece.new(el.color, new_board, el.pos, el.symbol)
+          new_board[pos].kinged = el.kinged
         end
         
       end
