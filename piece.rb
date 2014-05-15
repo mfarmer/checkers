@@ -1,18 +1,12 @@
 class Piece
 
-  attr_accessor :color
+  attr_accessor :color, :pos, :blinking
 
-  def initialize(color,board)
+  def initialize(color,board,pos)
     @color = color
     @board = board
-  end
-
-  def perform_slide
-
-  end
-
-  def perform_jump
-
+    @pos = pos
+    @blinking = false
   end
 
   def perform_moves(move_sequence)
@@ -23,8 +17,18 @@ class Piece
     end
   end
 
-  def perform_moves!(move_sequence)
+  protected
 
+  def perform_slide
+
+  end
+
+  def perform_jump
+
+  end
+
+  def perform_moves!(move_sequence)
+    return true
   end
 
   def valid_move_seq?(move_sequence)
