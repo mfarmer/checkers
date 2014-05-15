@@ -40,9 +40,13 @@ class Piece
     @board[@pos] = nil
     @pos = destination_coord
   end
+  
+  def between_coord(destination_coord)
+    [(destination_coord[0] + @pos[0])/2,(destination_coord[1] + @pos[1])/2]
+  end
 
   def perform_jump(destination_coord)
-    between_coord = [(destination_coord[0] + @pos[0])/2,(destination_coord[1] + @pos[1])/2]
+    between_coord = between_coord(destination_coord)
     
     #puts "I'm looking at #{between_coord}"
     
@@ -61,7 +65,21 @@ class Piece
   end
   
   def move_possible?
-    true
+    all_moves = move_diffs.map { |diff| [diff[0]+@pos[0],diff[1]+@pos[1]] }
+    
+    slide_moves = all_moves.select { |coord| has_slide_move?(coord) }
+    jump_moves = all_moves - slide_moves
+    
+    slide_moves.each do |possible_coord|
+      return true if @board[possible_coord].nil?
+    end
+    
+    jump_moves.each do |possible_coord|
+      return true if @board[possible_coord].nil? && !@board[between_coord(possible_coord)].nil? && !@board[between_coord(possible_coord)].color != @color
+    end
+    
+    # No block detected, both teams should have at least one available move
+    return false
   end
 
   def valid_move_seq?(move_sequence)

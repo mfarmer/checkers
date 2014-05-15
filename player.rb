@@ -27,6 +27,11 @@ class Player
       puts error_message if error_occurred
       error_occurred = false
       
+      # Does this player even have a chance to move? If not, bail.
+      if @board.blocked?
+        return
+      end
+      
       # Choose piece
       piece = prompt_user_for_piece
       piece.blinking = true
