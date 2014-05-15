@@ -75,6 +75,9 @@ class Piece
   end
   
   def move_within_reach?(coord)
+    puts "Am I king? #{@kinged}"
+    puts "I think my move diffs are #{move_diffs}"
+    
     move_diffs.map{ |diff| [diff[0] + @pos[0], diff[1] + @pos[1]] }.include?(coord)
   end
   
@@ -92,13 +95,14 @@ class Piece
   end
 
   def move_diffs
-    return [[1,1],[2,2],[1,-1],[2,-2],[-1,1],[-1,-1],[-2,-2],[-2,2]] if self.kinged?
+    return [[1,1],[2,2],[1,-1],[2,-2],[-1,1],[-1,-1],[-2,-2],[-2,2]] if self.kinged
     return [[1,1],[2,2],[1,-1],[2,-2]] if self.color == :red
     [[-1,1],[-1,-1],[-2,-2],[-2,2]]
   end
 
   def maybe_promote
-
+    king_me if color == :red && @pos[0] == 7
+    king_me if color == :black && @pos[0] == 0
   end
 
 end

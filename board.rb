@@ -15,6 +15,13 @@ class Board
   end
   
   def setup_pieces
+    @grid[7][1] = Piece.new(:red, self, [7, 1], '◉')
+    @grid[7][1].king_me
+    @grid[4][4] = Piece.new(:black, self, [4, 4], '◉')
+    @grid[6][2] = Piece.new(:black, self, [6, 2], '◉')
+  end
+=begin
+  def setup_pieces
     @grid[0][0] = Piece.new(:red, self, [0, 0], '◉')
     @grid[0][2] = Piece.new(:red, self, [0, 2], '◉')
     @grid[0][4] = Piece.new(:red, self, [0, 4], '◉')
@@ -41,6 +48,7 @@ class Board
     @grid[7][5] = Piece.new(:black, self, [7, 5], '◉')
     @grid[7][7] = Piece.new(:black, self, [7, 7], '◉')
   end
+=end
 
   def perform_moves!(piece,move_sequence)
     #debugger
@@ -49,7 +57,9 @@ class Board
     
     move_sequence.each do |desired_coord|
       
-      raise "Impossible move" if move_within_reach?(desired_coord)
+      puts "Is #{desired_coord} possible from #{piece.pos}? #{piece.move_within_reach?(desired_coord)}"
+      @game.pause
+      raise "Impossible move" if !piece.move_within_reach?(desired_coord)
       
       if piece.has_slide_move?([desired_coord])
         puts "Slide move detected."
@@ -61,9 +71,8 @@ class Board
     end
     
     puts "Seems to be no problem..."
+    piece.maybe_promote
   end
-  
-  
   
   def disable_blinking
     @grid.flatten.compact.each do |piece|
@@ -135,6 +144,7 @@ class Board
           new_board[pos] = el
         else
           new_board[pos] = Piece.new(el.color, new_board, el.pos, el.symbol)
+          new_board[pos].kinged = el.kinged
         end
         
       end
