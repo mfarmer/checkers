@@ -81,6 +81,24 @@ class Piece
     # No block detected, both teams should have at least one available move
     return false
   end
+  
+  def get_valid_move
+    all_moves = move_diffs.map { |diff| [diff[0]+@pos[0],diff[1]+@pos[1]] }
+    all_moves.map! { |el| !not_within_boundaries(el) }
+    
+    slide_moves = all_moves.select { |coord| has_slide_move?(coord) }
+    jump_moves = all_moves - slide_moves
+    
+    slide_moves.each do |possible_coord|
+      return possible_coord if @board[possible_coord].nil?
+    end
+    
+    jump_moves.each do |possible_coord|
+      return possible_coord if @board[possible_coord].nil? && !@board[between_coord(possible_coord)].nil? && @board[between_coord(possible_coord)].color != @color
+    end
+    
+    nil
+  end
 
   def valid_move_seq?(move_sequence)
     # Just a quick test on obvious move errors. We'll test more details things as we go.

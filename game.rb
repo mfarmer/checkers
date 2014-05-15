@@ -17,7 +17,8 @@ class Game
 
     @board.display
 
-    while !@board.won?
+    # Win conditions are checked inside player moves. Players say when they can't make a move or when they are out of pieces.
+    loop do
       @player_1.make_move
       @player_2.make_move
     end

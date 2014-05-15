@@ -28,7 +28,7 @@ class Player
       error_occurred = false
       
       # Does this player even have a chance to move? If not, bail.
-      if @board.blocked?
+      if @board.blocked? || @board.won?
         return
       end
       
@@ -44,10 +44,10 @@ class Player
       test_piece = test_board[piece.pos]
       
       test_piece.perform_moves(sequence)
-      puts "[!] I did it! Woohoo. Test board was satisfactory."
+      #puts "[!] I did it! Woohoo. Test board was satisfactory."
       
       piece.perform_moves(sequence)
-      puts "[!] Now I did it for real on my original board!"
+      #puts "[!] Now I did it for real on my original board!"
       
     rescue
       error_occurred = true
