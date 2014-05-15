@@ -74,9 +74,11 @@ class Player
   def prompt_user_for_moves
     print_prompt("[?] Please enter your move sequence (separate coordinates with ,):")
     
-    gets.chomp.split(',').map do |unclean_coord|
+    moves = gets.chomp.split(',').map do |unclean_coord|
       input_to_coordinate(unclean_coord)
     end
+    
+    raise exception if moves.empty?
   end
 
 end
