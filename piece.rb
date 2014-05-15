@@ -27,6 +27,7 @@ class Piece
 
   def perform_moves(move_sequence)
     if valid_move_seq?(move_sequence)
+      # Seems ok, could still have bad errors.
       @board.perform_moves!(self,move_sequence)
     else
       raise "InvalidMoveError"
@@ -45,21 +46,19 @@ class Piece
   end
 
   def valid_move_seq?(move_sequence)
+    # Just a quick test on obvious move errors. We'll test more details things as we go.
     move_sequence.each do |coordinate|
+      vantage_coord = coordinate
       raise "Out of bounds" if not_within_boundaries(coordinate)
       raise "Spot is occupied" if !@board[coordinate].nil?
-      raise "Can't slide within move sequence" if move_sequence.count > 1 && has_slide_move(move_sequence)
-      raise "Must be diagonal move" if coordinate[0] == @pos[0] || coordinate[1] == @pos[1]
-      raise "Impossible move" if !move_diffs.map do |diff|
-        [diff[0] + @pos[0], diff[1] + @pos[1]]
-      end.include?(coordinate)
+      raise "Slide sequence error" if has_slide_move?(move_sequence) && move_sequence.count > 1
     end
     true
   end
   
-  def has_slide_move(sequence)
+  def has_slide_move?(sequence)
     sequence.each do |coord|
-      if (coord[0] - @pos[0]).abs == 1 && (coord[1] - @pos[1]).abs == 1
+      if (coord[0] - @pos[0]).abs == 1 && (coord[1] - @pos[1]).abs == 1 && move_diffs.map{ |diff| [diff[0] + @pos[0], diff[1] + @pos[1]] }.include?(coord)
         return true
       end
     end

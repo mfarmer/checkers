@@ -47,19 +47,19 @@ class Board
     puts "perform_moves!: #{piece.pos} is going to try #{move_sequence}"
     @game.pause
     
-    # One slide only?
-    if move_sequence.count == 1
-      puts "Slide only!"
-      piece.perform_slide(move_sequence.first)
-    else
-      puts "I think you want a sequence of moves."
-      move_sequence.each do |desired_coord|
-        piece.perform_jump(desired_coord)
+    move_sequence.each do |desired_coord|
+      if piece.has_slide_move?([desired_coord])
+        puts "Slide move detected."
+        piece.perform_slide(desired_coord)
+      else
+        raise "Bad move"
       end
     end
     
     puts "Seems to be no problem..."
   end
+  
+  
   
   def disable_blinking
     @grid.flatten.compact.each do |piece|

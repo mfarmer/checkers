@@ -16,6 +16,7 @@ class Player
   def make_move
     error_occurred = false
     error_message = ''
+    
     begin
       @board.disable_blinking
       @board.display
