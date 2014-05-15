@@ -74,7 +74,11 @@ class Board
         if piece.nil?
           print "   ".colorize(:background => bg_color)
         else
-          print " ◉ ".colorize(:color => piece.color,:background => bg_color)
+          if piece.blinking?
+            print " ◉ ".colorize(:color => piece.color,:background => bg_color).blink
+          else
+            print " ◉ ".colorize(:color => piece.color,:background => bg_color)
+          end
         end
         bg_color = alternate_bg_color(bg_color)
       end

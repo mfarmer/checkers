@@ -1,6 +1,7 @@
 class Piece
 
-  attr_accessor :color, :pos, :blinking
+  attr_accessor :color, :pos
+  attr_writer :blinking
 
   def initialize(color,board,pos)
     @color = color
@@ -9,11 +10,15 @@ class Piece
     @blinking = false
   end
 
+  def blinking?
+    @blinking
+  end
+
   def perform_moves(move_sequence)
     if valid_move_seq?(move_sequence)
-      perform_moves!(move_sequence)
+
     else
-      raise "InvalidMoveError"
+
     end
   end
 
