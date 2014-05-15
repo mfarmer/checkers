@@ -35,7 +35,7 @@ class Piece
   end
 
   def perform_slide(destination_coord)
-    puts "I'm in perform slide going to #{destination_coord}"
+    #puts "I'm in perform slide going to #{destination_coord}"
     @board[destination_coord] = self
     @board[@pos] = nil
     @pos = destination_coord
@@ -44,7 +44,7 @@ class Piece
   def perform_jump(destination_coord)
     between_coord = [(destination_coord[0] + @pos[0])/2,(destination_coord[1] + @pos[1])/2]
     
-    puts "I'm looking at #{between_coord}"
+    #puts "I'm looking at #{between_coord}"
     
     if @board[between_coord].nil? || @board[between_coord].color == @color
       raise "Can't jump over this spot"
@@ -56,8 +56,8 @@ class Piece
       @pos = destination_coord
     end
     
-    puts "Jump seems OK"
-    @board.game.pause
+    #puts "Jump seems OK"
+    #@board.game.pause
   end
 
   def valid_move_seq?(move_sequence)
@@ -75,8 +75,8 @@ class Piece
   end
   
   def move_within_reach?(coord)
-    puts "Am I king? #{@kinged}"
-    puts "I think my move diffs are #{move_diffs}"
+    #puts "Am I king? #{@kinged}"
+    #puts "I think my move diffs are #{move_diffs}"
     
     move_diffs.map{ |diff| [diff[0] + @pos[0], diff[1] + @pos[1]] }.include?(coord)
   end
