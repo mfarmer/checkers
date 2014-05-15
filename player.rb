@@ -51,8 +51,7 @@ class Player
       
     rescue
       error_occurred = true
-      error_message = 
-      "[!] ERROR: Invalid move sequence. Please try again.".colorize(:color => :red)
+      error_message = "[!] ERROR: #{$!}. Please try again.".colorize(:color => :red)
       retry
     end
     
