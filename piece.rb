@@ -41,24 +41,46 @@ class Piece
     @pos = destination_coord
   end
 
-  def perform_jump
-
+  def perform_jump(destination_coord)
+    between_coord = [(destination_coord[0] + @pos[0])/2,(destination_coord[1] + @pos[1])/2]
+    
+    puts "I'm looking at #{between_coord}"
+    
+    if @board[between_coord].nil? || @board[between_coord].color == @color
+      raise "Can't jump over this spot"
+    else
+      # I can jump this opponent
+      @board[between_coord] = nil
+      @board[destination_coord] = self
+      @board[@pos] = nil
+      @pos = destination_coord
+    end
+    
+    puts "Jump seems OK"
+    @board.game.pause
   end
 
   def valid_move_seq?(move_sequence)
     # Just a quick test on obvious move errors. We'll test more details things as we go.
+    if has_slide_move?(move_sequence) && move_sequence.count > 1
+      raise "can't slide in a sequence"
+    end
+    
     move_sequence.each do |coordinate|
       vantage_coord = coordinate
       raise "Out of bounds" if not_within_boundaries(coordinate)
       raise "Spot is occupied" if !@board[coordinate].nil?
-      raise "Slide sequence error" if has_slide_move?(move_sequence) && move_sequence.count > 1
     end
     true
   end
   
+  def move_within_reach?(coord)
+    move_diffs.map{ |diff| [diff[0] + @pos[0], diff[1] + @pos[1]] }.include?(coord)
+  end
+  
   def has_slide_move?(sequence)
     sequence.each do |coord|
-      if (coord[0] - @pos[0]).abs == 1 && (coord[1] - @pos[1]).abs == 1 && move_diffs.map{ |diff| [diff[0] + @pos[0], diff[1] + @pos[1]] }.include?(coord)
+      if (coord[0] - @pos[0]).abs == 1 && (coord[1] - @pos[1]).abs == 1 && move_within_reach?(coord)
         return true
       end
     end

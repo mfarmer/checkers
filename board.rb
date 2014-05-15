@@ -48,11 +48,15 @@ class Board
     @game.pause
     
     move_sequence.each do |desired_coord|
+      
+      raise "Impossible move" if move_within_reach?(desired_coord)
+      
       if piece.has_slide_move?([desired_coord])
         puts "Slide move detected."
         piece.perform_slide(desired_coord)
       else
-        raise "Bad move"
+        puts "I think #{desired_coord} is a jump move"
+        piece.perform_jump(desired_coord)
       end
     end
     
