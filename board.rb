@@ -75,6 +75,13 @@ class Board
     piece.maybe_promote
   end
   
+  def blink_all_of_color(color)
+    @grid.flatten.compact.each do |piece|
+      piece.blinking = true if piece.color == color
+    end
+    nil
+  end
+  
   def disable_blinking
     @grid.flatten.compact.each do |piece|
       piece.blinking = false
@@ -83,11 +90,27 @@ class Board
   end
   
   def won?
-    pieces(:red).empty? || pieces(:black).empty?
+    (pieces(:red).empty? || pieces(:black).empty?) || blocked?
+  end
+  
+  def blocked?
+    # Is a player unable to make a move?
+    red_pieces = pieces(:red)
+    black_pieces = pieces(:black)
+    
+    red_pieces.each do |piece|
+      return true if !piece.move_possible?
+    end
+    
+    black_pieces.each do |piece|
+      return true if !piece.move_possible?
+    end
+    
+    false
   end
 
   def winner_color?
-    pieces(:red).empty? ? :red : :black
+    pieces(:red).empty? ? :black : :red
   end
 
   def [](pos)

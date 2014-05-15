@@ -9,8 +9,11 @@ class Player
   end
 
   def prompt_user_for_name
+    @board.blink_all_of_color(@color)
+    @board.display
     print_prompt("[?] #{name}: Please enter your name: ")
     @name = gets.chomp
+    @board.disable_blinking
   end
 
   def make_move

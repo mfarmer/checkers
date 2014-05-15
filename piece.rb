@@ -59,6 +59,10 @@ class Piece
     #puts "Jump seems OK"
     #@board.game.pause
   end
+  
+  def move_possible?
+    true
+  end
 
   def valid_move_seq?(move_sequence)
     # Just a quick test on obvious move errors. We'll test more details things as we go.

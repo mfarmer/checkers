@@ -1,3 +1,4 @@
+require 'colorize'
 require './board.rb'
 require './player.rb'
 
@@ -10,7 +11,7 @@ class Game
   end
 
   def play
-
+    
     @player_1.prompt_user_for_name
     @player_2.prompt_user_for_name
 
@@ -21,8 +22,8 @@ class Game
       @player_2.make_move
     end
 
-    puts "Congratulations, #{@board.winner_color?},
-     you have won the game!".colorize(:color => :green).blink
+    puts "Game has ended"
+    #puts "Congratulations, #{@board.winner_color?}, you have won the game!".colorize(:color => :green).blink
   end
   
   def pause
